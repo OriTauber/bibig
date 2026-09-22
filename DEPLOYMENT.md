@@ -29,8 +29,9 @@ and signing material from being committed.
 ## 2. Create the Supabase PostgreSQL database
 
 1. Create a free Supabase project and save its database password privately.
-2. In **Connect**, copy the direct PostgreSQL URI. Use the URI with SSL enabled;
-   it normally includes `sslmode=require`.
+2. In **Connect**, choose **Session pooler** and copy its PostgreSQL URI. It uses
+   the `*.pooler.supabase.com` host on port `5432` and is IPv4-compatible with
+   Render. Use the URI with SSL enabled; it normally includes `sslmode=require`.
 3. Temporarily set `DATABASE_URL` in your local `backend/.env` to that URI.
 4. Run the migrations from the project root:
 
@@ -114,4 +115,3 @@ need for the current local-network HTTP setup. Do not commit this root `.env`.
    other.
 4. Test the API health URL after the service has been idle; the first request can
    be delayed while Render wakes it.
-
