@@ -32,7 +32,9 @@ The frontend automatically uses `/api` in the browser and `http://10.0.2.2:3001/
 
 For a phone on Wi-Fi, replace `YOUR_PC_IPV4` with the IPv4 address from `ipconfig`. Start the backend with `npm run backend:dev`; it listens on your LAN interfaces. Allow Node.js through Windows Firewall on private networks if the phone cannot connect.
 
-`android:usesCleartextTraffic="true"` is enabled only to support local HTTP development. Before distributing the app, deploy the API with HTTPS and remove this attribute plus `cleartext: true` from `capacitor.config.ts`.
+Release builds allow HTTPS API traffic only. Set `VITE_API_URL` to the deployed
+HTTPS API before running `npm run android:sync`. A release APK cannot reach a
+plain-HTTP local development server.
 
 ## Authentication
 
