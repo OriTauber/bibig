@@ -1,0 +1,3 @@
+import type { Workout } from '../domain/workouts.js'
+import type { WorkoutRepository } from '../repositories/WorkoutRepository.js'
+export class WorkoutService { constructor(private readonly repository: WorkoutRepository) {} getAll(userId: string) { return this.repository.getAll(userId) } getById(userId: string, id: string) { return this.repository.getById(userId, id) } create(userId: string, workout: Workout) { return this.repository.create(userId, workout) } update(userId: string, workout: Workout) { return this.repository.update(userId, workout) } delete(userId: string, id: string) { return this.repository.delete(userId, id) } }

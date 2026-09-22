@@ -1,0 +1,41 @@
+{
+  "name": "bibig",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "workspaces": [
+    "backend"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "backend:dev": "npm run dev --workspace=backend",
+    "backend:build": "npm run build --workspace=backend",
+    "backend:test": "npm run test --workspace=backend",
+    "backend:migrate": "npm run migrate --workspace=backend",
+    "backend:reset-db": "npm run reset-db --workspace=backend --",
+    "android:sync": "npm run build && npx cap sync android",
+    "android:build": "npm run android:sync",
+    "android:open": "npx cap open android"
+  },
+  "dependencies": {
+    "@capacitor-firebase/authentication": "^7.5.0",
+    "@capacitor/android": "7.6.9",
+    "@capacitor/core": "7.6.9",
+    "firebase": "^11.10.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "7.6.9",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "fake-indexeddb": "^6.0.0",
+    "typescript": "^5.7.2",
+    "vite": "^5.4.10",
+    "vitest": "^2.1.8"
+  }
+}

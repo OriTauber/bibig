@@ -1,0 +1,22 @@
+import { useMemo, useState } from 'react'
+import { filterWorkouts } from '../../domain/workouts/queries'
+import type { Workout, WorkoutKind, WorkoutType } from '../../domain/workouts/models'
+import { kindsFor } from '../../domain/workouts/workoutTypes'
+import { WorkoutDetails } from '../workouts/WorkoutDetails'
+import { NewWorkoutForm } from '../workouts/NewWorkoutForm'
+
+export function HistoryPage({ workouts, onUpdate, onDelete }: { workouts: Workout[]; onUpdate: (workout: Workout) => Promise<void>; onDelete: (id: string) => Promise<void> }) {
+  const [editing, setEditing] = useState(false)
+  const [actionError, setActionError] = useState('')
+  const [deleting, setDeleting] = useState(false)
+  async function remove(workout: Workout) {
+    if (!window.confirm('Delete this workout?')) return
+    setDeleting(true); setActionError('')
+    try { await onDelete(workout.id); setSelected(null) }
+    catch (error) { setActionError(error instanceof Error ? error.message : 'Delete failed.') }
+    finally { setDeleting(false) }
+  }
+  const [search, setSearch] = useState(''); const [type, setType] = useState<WorkoutType | 'all'>('all'); const [kind, setKind] = useState<WorkoutKind | 'all'>('all'); const [exercise, setExercise] = useState(''); const [startDate, setStartDate] = useState(''); const [endDate, setEndDate] = useState(''); const [sort, setSort] = useState<'newest' | 'oldest'>('newest'); const [selected, setSelected] = useState<Workout | null>(null)
+  const results = useMemo(() => filterWorkouts(workouts, { search, type, kind, exercise, startDate, endDate, sort }), [workouts, search, type, kind, exercise, startDate, endDate, sort])
+  return <section className="page"><div className="page-heading"><p className="eyebrow">Training archive</p><h1>History</h1><p>Scroll through my criminal record. When working out, consistence is key!</p></div><div className="filters"><input aria-label="Search workouts" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search workouts or notes" /><select value={type} onChange={(e) => { const value = e.target.value as WorkoutType | 'all'; setType(value); setKind('all') }}><option value="all">All categories</option><option value="strength">Gym</option><option value="run">Running</option><option value="ride">Cycling</option></select><select value={kind} onChange={(e) => setKind(e.target.value as WorkoutKind | 'all')}><option value="all">All workout types</option>{type !== 'all' && kindsFor(type).map((entry) => <option key={entry.value} value={entry.value}>{entry.label}</option>)}</select><input value={exercise} onChange={(e) => setExercise(e.target.value)} placeholder="Exercise" /><label>From<input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} /></label><label>To<input type="date" value={endDate} onChange={(e) => setEndDate(e.target.value)} /></label><select value={sort} onChange={(e) => setSort(e.target.value as 'newest' | 'oldest')}><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></div><p className="result-count">{results.length} workout{results.length === 1 ? '' : 's'} found</p><div className="history-results">{results.map((workout) => <button className="history-item" key={workout.id} onClick={() => { setSelected(workout); setEditing(false); setActionError('') }}><WorkoutDetails workout={workout} compact /></button>)}{results.length === 0 && <div className="empty"><strong>No matching workouts.</strong><span>Try broadening or clearing a filter.</span></div>}</div>{selected && <div className="modal-backdrop" onClick={() => setSelected(null)}><div className="modal" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}><button className="modal-close" onClick={() => setSelected(null)}>Close</button>{editing ? <NewWorkoutForm key={selected.id} initialWorkout={selected} previousWorkouts={workouts} onSave={async workout => { await onUpdate(workout); setSelected(null) }} /> : <WorkoutDetails workout={selected} />}<div className="set-actions"><button className="text-button" onClick={() => setEditing(!editing)}>{editing ? 'Cancel editing' : 'Edit workout'}</button><button className="text-button" disabled={deleting} onClick={() => void remove(selected)}>{deleting ? 'Deleting…' : 'Delete workout'}</button></div>{actionError && <p className="app-error" role="alert">{actionError}</p>}</div></div>}</section>
+}

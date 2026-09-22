@@ -1,0 +1,2 @@
+export interface User { id: string; email: string; username: string; passwordHash: string | null; googleSub: string | null; createdAt: string }
+export interface UserRepository { create(email: string, username: string, passwordHash: string | null, googleSub?: string): Promise<User>; findByEmail(email: string): Promise<User | null>; findByUsername(username: string): Promise<User | null>; findByGoogleSub(googleSub: string): Promise<User | null> }
