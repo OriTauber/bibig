@@ -26,3 +26,11 @@ export function formatDuration(seconds: number): string {
   const remainder = Math.round(seconds % 60).toString().padStart(2, '0')
   return `${minutes}:${remainder}`
 }
+
+export function formatElapsedDuration(seconds: number): string {
+  const wholeSeconds = Math.max(0, Math.round(seconds))
+  const hours = Math.floor(wholeSeconds / 3600).toString().padStart(2, '0')
+  const minutes = Math.floor((wholeSeconds % 3600) / 60).toString().padStart(2, '0')
+  const remainder = (wholeSeconds % 60).toString().padStart(2, '0')
+  return `${hours}:${minutes}:${remainder}`
+}

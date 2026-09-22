@@ -1,4 +1,4 @@
-import { calculatePace, calculateSpeedKph, calculateWorkoutVolume, formatDuration } from '../../domain/workouts/calculations'
+import { calculatePace, calculateSpeedKph, calculateWorkoutVolume, formatDuration, formatElapsedDuration } from '../../domain/workouts/calculations'
 import type { Workout } from '../../domain/workouts/models'
 import { formatWorkoutKind } from '../../domain/workouts/workoutTypes'
 
@@ -11,7 +11,7 @@ export function WorkoutDetails({ workout, compact = false }: { workout: Workout;
       <p className="workout-summary">{Math.round(calculateWorkoutVolume(workout)).toLocaleString()} kg volume · {workout.exercises.length} exercise{workout.exercises.length === 1 ? '' : 's'}</p>
       {!compact && <div className="exercise-detail">{workout.exercises.map((exercise) => <p key={exercise.id}><strong>{exercise.name}</strong><span>{exercise.sets.map((set) => `${set.weightKg} kg × ${set.reps}`).join(' · ')}</span></p>)}</div>}
     </> : endurance && <div className="endurance-summary">
-      <span><strong>{endurance.distanceKm.toFixed(2)} km</strong>distance</span><span><strong>{formatDuration(endurance.durationSeconds)}</strong>duration</span><span><strong>{workout.type === 'run' ? `${formatDuration(calculatePace(endurance) ?? 0)} /km` : `${(calculateSpeedKph(endurance) ?? 0).toFixed(1)} km/h`}</strong>{workout.type === 'run' ? 'pace' : 'average speed'}</span>
+      <span><strong>{endurance.distanceKm.toFixed(2)} km</strong>distance</span><span><strong>{formatElapsedDuration(endurance.durationSeconds)}</strong>duration</span><span><strong>{workout.type === 'run' ? `${formatDuration(calculatePace(endurance) ?? 0)} /km` : `${(calculateSpeedKph(endurance) ?? 0).toFixed(1)} km/h`}</strong>{workout.type === 'run' ? 'pace' : 'average speed'}</span>
     </div>}
     {workout.notes && !compact && <p className="notes">{workout.notes}</p>}
   </article>

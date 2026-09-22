@@ -18,7 +18,7 @@ export function SignIn({ onSession, onLocal, message }: { onSession: (session: S
   async function google(credential: string) { setBusy(true); setError(''); try { onSession(await authenticateWithGoogle(credential, mode === 'register' ? username.trim() : undefined)) } catch (error) { setError(error instanceof Error ? error.message : 'Google sign-in failed.') } finally { setBusy(false) } }
   return <main className="app-shell"><h1 className="signin-brand"><img src="/bibiglogo-enhanced-v2.png" alt="bibig" /></h1><section className="auth-panel new-workout">
     <h2>{mode === 'login' ? 'Welcome back' : 'Create your account'}</h2>
-    <p>{mode === 'login' ? 'Use your email and password, or your existing Google-linked account.' : 'Choose a username, then create an account with a password or Google.'}</p>
+    <p>{mode === 'login' ? 'Use your email and password, or your existing Google-linked account, or your Likud member card' : 'Choose a username, then create an account with a password or Google.'}</p>
     {message && <p role="status">{message}</p>}
     <form onSubmit={submit}>
       <fieldset disabled={busy}>

@@ -27,7 +27,7 @@ export default function App() {
     : new IndexedDBWorkoutRepository(), [session])
   if (!session && !local) return <SignIn message={message} onSession={acceptSession} onLocal={() => setLocal(true)} />
   return <WorkoutApp key={session?.token ?? 'local'} repository={repository} account={session?.user.username}
-    onExit={() => { rememberSession(null); setSession(null); setLocal(false); setMessage('Any unsynced account workouts remain on this device. Sign back into the same account to resume syncing.') }} />
+    onExit={() => { rememberSession(null); setSession(null); setLocal(false); setMessage('Any unsynced account workouts remain on this device. If you don\'t sign back, Bibi may take a look.') }} />
 }
 
 function WorkoutApp({ repository, account, onExit }: { repository: WorkoutRepository; account?: string; onExit: () => void }) {
